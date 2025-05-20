@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import CustomUser
+from .models import CustomUser, Follow
+from django.contrib.auth import get_user_model
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -21,3 +22,18 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ("id", "email", "username", "bio", "profile_image", "created_at")
+
+
+User = get_user_model()
+
+
+class FollowSerializer(serializers.ModelSerializer):
+    follower = serializers.StringRelatedField(read_only=True)
+    following = serializers.SlugRelatedField(
+        slug_field="username", queryset=User.objects.all()
+    )
+
+    class Meta:
+        model = Follow
+        fields = ["id", "follower", "following", "created_at"]
+        read_only_fields = ["id", "follower", "created_at"]

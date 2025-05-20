@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Post
+from .models import Post, Comment
 from accounts.models import CustomUser
 
 
@@ -21,3 +21,12 @@ class PostSerializer(serializers.ModelSerializer):
 
     def get_likes_count(self, obj):
         return obj.likes.count()
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    user = serializers.StringRelatedField(read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = ["id", "user", "post", "content", "created_at"]
+        read_only_fields = ["user", "post", "created_at"]
