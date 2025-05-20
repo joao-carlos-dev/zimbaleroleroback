@@ -37,3 +37,10 @@ class FollowSerializer(serializers.ModelSerializer):
         model = Follow
         fields = ["id", "follower", "following", "created_at"]
         read_only_fields = ["id", "follower", "created_at"]
+
+
+class SimpleUserSerializer(serializers.Serializer):
+    username = serializers.CharField()
+
+    def to_representation(self, instance):
+        return {"username": instance}

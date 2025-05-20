@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
+from rest_framework.pagination import PageNumberPagination
 from .models import Post, Like, Comment
 from .serializers import PostSerializer, CommentSerializer
 
@@ -85,3 +86,20 @@ class PostDeleteView(generics.DestroyAPIView):
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
+
+
+class PostPagination(PageNumberPagination):
+    page_size = 7
+
+
+class FollowingFeedView(generics.ListAPIView):
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    pagination_class = PostPagination
+
+    def get_queryset(self):
+        user = self.request.user
+        # pega os usuários que o user está seguindo
+        following_users = user.following.values_list("following_id", flat=True)
+        # retorna posts desses usuários, ordenados por data desc
+        return Post.objects.filter(user__id__in=following_users).order_by("-created_at")

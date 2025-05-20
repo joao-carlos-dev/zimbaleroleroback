@@ -9,6 +9,7 @@ from .views import (
     PostDeleteView,
     CommentUpdateView,
     CommentDeleteView,
+    FollowingFeedView,
 )
 
 urlpatterns = [
@@ -29,4 +30,8 @@ urlpatterns = [
     path(
         "comments/<int:pk>/delete/", CommentDeleteView.as_view(), name="delete_comment"
     ),
+]
+
+urlpatterns += [
+    path("feed/following/", FollowingFeedView.as_view(), name="following_feed"),
 ]
