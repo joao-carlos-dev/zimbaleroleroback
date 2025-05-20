@@ -1,0 +1,76 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media
+
+# If using PostgreSQL or MySQL, ignore local database dumps
+*.sql
+
+# Django migrations (optional - sometimes you want these in Git)
+*/migrations/__pycache__/
+*/migrations/*.pyc
+# Uncomment the next line if you want to ignore all migration files (not recommended for production)
+# */migrations/*.py
+
+# Environment variables and settings
+.env
+.env.*
+
+# VS Code and IDE stuff
+.vscode/
+.idea/
+*.swp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Python virtual environment
+venv/
+env/
+ENV/
+.venv/
+.ENV/
+
+# Static files (if collected outside the app)
+staticfiles/
+static/
+
+# Node stuff (if using for frontend or tooling)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Coverage reports
+htmlcov/
+.coverage
+coverage.xml
+*.cover
+.hypothesis/
+
+# Test output
+nosetests.xml
+test.db
+junit-*.xml
+
+# Pytest
+.cache/
+
+# Build
+build/
+dist/
+*.egg-info/
+.eggs/
