@@ -8,12 +8,12 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ("email", "username", "password")
+        fields = ("email", "nome", "password")
 
     def create(self, validated_data):
         return CustomUser.objects.create_user(
             email=validated_data["email"],
-            username=validated_data["username"],
+            nome=validated_data["nome"],
             password=validated_data["password"],
         )
 
@@ -21,7 +21,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ("id", "email", "username", "bio", "profile_image", "created_at")
+        fields = ("id", "email", "nome", "bio", "profile_image", "created_at")
 
 
 User = get_user_model()
@@ -30,7 +30,7 @@ User = get_user_model()
 class FollowSerializer(serializers.ModelSerializer):
     follower = serializers.StringRelatedField(read_only=True)
     following = serializers.SlugRelatedField(
-        slug_field="username", queryset=User.objects.all()
+        slug_field="nome", queryset=User.objects.all()
     )
 
     class Meta:
@@ -40,7 +40,7 @@ class FollowSerializer(serializers.ModelSerializer):
 
 
 class SimpleUserSerializer(serializers.Serializer):
-    username = serializers.CharField()
+    nome = serializers.CharField()
 
     def to_representation(self, instance):
-        return {"username": instance}
+        return {"nome": instance}

@@ -10,7 +10,7 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.username}: {self.content[:30]}"
+        return f"{self.user.nome}: {self.content[:30]}"
 
 
 class Like(models.Model):
@@ -22,7 +22,7 @@ class Like(models.Model):
         unique_together = ("user", "post")  # Um usuário só pode curtir 1 vez
 
     def __str__(self):
-        return f"{self.user.username} curtiu {self.post.id}"
+        return f"{self.user.nome} curtiu {self.post.id}"
 
 
 class Comment(models.Model):
@@ -32,4 +32,4 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.username} comentou no post {self.post.id}"
+        return f"{self.user.nome} comentou no post {self.post.id}"

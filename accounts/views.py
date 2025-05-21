@@ -27,10 +27,10 @@ class FollowToggleView(generics.GenericAPIView):
     serializer_class = FollowSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-    def post(self, request, username):
+    def post(self, request, nome):
         follower = request.user
         try:
-            following = User.objects.get(username=username)
+            following = User.objects.get(nome=nome)
         except User.DoesNotExist:
             return Response(
                 {"detail": "Usuário não encontrado."}, status=status.HTTP_404_NOT_FOUND
@@ -60,10 +60,10 @@ class FollowersListView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        username = self.kwargs["username"]
-        user = User.objects.get(username=username)
+        nome = self.kwargs["nome"]
+        user = User.objects.get(nome=nome)
         # Quem segue o user (follower)
-        return user.followers.all().values_list("follower__username", flat=True)
+        return user.followers.all().values_list("follower__nome", flat=True)
 
 
 class FollowingListView(generics.ListAPIView):
@@ -71,7 +71,7 @@ class FollowingListView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        username = self.kwargs["username"]
-        user = User.objects.get(username=username)
+        nome = self.kwargs["nome"]
+        user = User.objects.get(nome=nome)
         # Quem o user segue (following)
-        return user.following.all().values_list("following__username", flat=True)
+        return user.following.all().values_list("following__nome", flat=True)

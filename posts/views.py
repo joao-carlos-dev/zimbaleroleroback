@@ -20,6 +20,12 @@ class PostListView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
 
+class PostDetailView(generics.RetrieveAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
 class LikePostView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
