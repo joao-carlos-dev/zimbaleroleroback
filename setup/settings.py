@@ -14,6 +14,7 @@ import os
 from pathlib import Path
 from corsheaders.defaults import default_headers
 import dj_database_url
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,7 +28,7 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "unsafe-default")
 # "django-insecure-f2k2k71fs)t^jqc$58c!+@_!w4d1zdi_y@%608)3%-hz!v_3hu"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = config("DEBUG", default=False, cast=bool)
 
 ALLOWED_HOSTS = ["*"]
 
@@ -110,8 +111,8 @@ WSGI_APPLICATION = "setup.wsgi.application"
 #     }
 # }
 
-DATABASES = {"default": dj_database_url.config(default=os.environ.get("DATABASE_URL"))}
-
+# DATABASES = {"default": dj_database_url.config(default=os.environ.get("DATABASE_URL"))}
+DATABASES = {"default": dj_database_url.config(conn_max_age=600, ssl_require=True)}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
