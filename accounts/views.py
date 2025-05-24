@@ -1,6 +1,6 @@
-from rest_framework import generics, permissions, status
+from rest_framework import generics, permissions, status, filters
 from rest_framework.response import Response
-from .serializers import RegisterSerializer
+from .serializers import RegisterSerializer, UserSerializer
 from .models import CustomUser, Follow
 from .serializers import UserProfileSerializer, FollowSerializer, SimpleUserSerializer
 from django.contrib.auth import get_user_model
@@ -48,10 +48,14 @@ class FollowToggleView(generics.GenericAPIView):
 
         if not created:
             follow_obj.delete()
-            return Response({"detail": "Deixou de seguir."}, status=status.HTTP_200_OK)
+            return Response(
+                {"detail": "Deixou de seguir.", "is_following": False},
+                status=status.HTTP_200_OK,
+            )
 
         return Response(
-            {"detail": "Agora você está seguindo."}, status=status.HTTP_201_CREATED
+            {"detail": "Agora você está seguindo.", "is_following": True},
+            status=status.HTTP_201_CREATED,
         )
 
 
@@ -75,3 +79,11 @@ class FollowingListView(generics.ListAPIView):
         user = User.objects.get(nome=nome)
         # Quem o user segue (following)
         return user.following.all().values_list("following__nome", flat=True)
+
+
+class UserSearchView(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ["nome"]

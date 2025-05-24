@@ -42,5 +42,24 @@ class FollowSerializer(serializers.ModelSerializer):
 class SimpleUserSerializer(serializers.Serializer):
     nome = serializers.CharField()
 
-    def to_representation(self, instance):
-        return {"nome": instance}
+    class Meta:
+        model = User
+        fields = ["id", "nome"]
+
+    # def to_representation(self, instance):
+    #     return {"nome": instance}
+
+
+class UserSerializer(serializers.ModelSerializer):
+    is_following = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = ["id", "nome", "email", "is_following"]
+
+    def get_is_following(self, obj):
+        """Retorna True se o usuário logado já segue esse usuário"""
+        request = self.context.get("request")
+        if request and request.user.is_authenticated:
+            return Follow.objects.filter(follower=request.user, following=obj).exists()
+        return False
